@@ -10,6 +10,12 @@ public class AppStartup : MonoBehaviour
 
         Quill.Init();
         QuillLua.Run();
+
+
+        // var label = Quill.CreateLabel("hello world");
+        // label.SetSize(100, 30);
+        // label.SetPosition(100, 100);
+        // Quill.mainRoot.Add(label);
     }
 
     private void Update()
