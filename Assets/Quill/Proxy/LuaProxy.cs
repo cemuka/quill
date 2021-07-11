@@ -1,0 +1,98 @@
+using MoonSharp.Interpreter;
+using UnityEngine;
+
+namespace QuillLib.Lua
+{
+    [MoonSharpUserData]
+    public class QuillElementProxy
+    {
+        private QuillElement _target;
+
+        public QuillElementProxy(QuillElement element)
+        {
+            _target = element;
+        }
+
+        public int getId()
+        {
+            return _target.id;
+        }
+
+        public void addChild(QuillElementProxy target)
+        {
+            var element = Quill.elements[target.getId()];
+            _target.root.Add(element);
+        }
+
+        public void setPivot(float x, float y)
+        {
+            _target.root.rectTransform.pivot = new Vector2(x, y);
+        }
+
+        public void setSize(float x, float y)
+        {
+            _target.root.rectTransform.sizeDelta = new Vector2(x, y);
+        }
+
+        public void setPosition(float x, float y)
+        {
+            _target.root.rectTransform.anchoredPosition = new Vector2(x, y);
+        }
+
+        public void setAnchorsMin(float x, float y){ _target.root.rectTransform.anchorMin = new Vector2(x, y); }
+        public void setAnchorsMax(float x, float y){ _target.root.rectTransform.anchorMax = new Vector2(x, y); }
+
+        public void SetDefaultTransformValues()
+        {
+            setPivot(0, 1);
+            setAnchorsMin(0,1);
+            setAnchorsMax(0,1);
+        }
+    }
+
+        
+    [MoonSharpUserData]
+    public class QuillLabelProxy : QuillElementProxy
+    {
+        private QuillLabel _target;
+
+        [MoonSharpHidden]
+        public QuillLabelProxy(QuillLabel label) : base(label)
+        {
+            _target = label;
+        }
+
+        public string getText()
+        {
+            return _target.Text.text;
+        }
+
+        public void setText(string text)
+        {
+            _target.Text.text = text;
+        }
+    }
+
+    [MoonSharpUserData]
+    public class QuillBoxProxy : QuillElementProxy
+    {
+        private QuillBox _target;
+
+        [MoonSharpHidden]
+        public QuillBoxProxy(QuillBox box) : base(box)
+        {
+            _target = box;
+        }
+
+        public void setColor(float r, float g, float b) 
+        {
+            _target.boxImage.color = new Color(r,g,b);
+        }
+
+        public void setColor(float r, float g, float b, float a) 
+        {
+            _target.boxImage.color = new Color(r,g,b,a);
+        }
+    }
+
+}
