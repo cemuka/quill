@@ -35,6 +35,17 @@ namespace QuillLib.Lua
                 _script.Call(_updateResult, Time.deltaTime);
             }
         }
+ 
+        public static void MessagePost(MessageData data)
+        {
+            var dataProxy = new MessageDataProxy()
+            {
+                id = data.id,
+                data = data.data
+            };
+            
+            _script.Call(_script.Globals["OnMessage"], dataProxy);
+        }
 
         public static void Exit()
         {
@@ -43,16 +54,6 @@ namespace QuillLib.Lua
             {
                 _script.Call(result);
             }
-        }
-        
-        public static void MessagePost(MessageData data)
-        {
-            var dataProxy = new MessageDataProxy()
-            {
-                id = data.id,
-                data = data.data
-            };
-            _script.Call(_script.Globals["OnMessage"], dataProxy);
         }
 
         [MoonSharpUserData]

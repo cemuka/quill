@@ -33,7 +33,7 @@ private void Update()
 local timePassed = 0
 local timeLabel = nil
 
-function Init()
+function OnInit()
 
     local root = quill.empty()
 
@@ -69,6 +69,31 @@ end
 
 ### dependencies
 Text Mesh Pro
+
+### Lua event hooks
+```lua
+function OnInit()
+
+end
+
+function OnUpdate(dt)
+
+end
+
+function OnMessage(data)
+
+end
+
+function OnExit()
+
+end
+```
+
+### Components
+- empty
+- label
+- box (wip)
+- button (wip)
 
 #### references
 [Moonsharp](https://www.moonsharp.org)
