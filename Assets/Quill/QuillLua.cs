@@ -2,6 +2,7 @@ using QuillLib;
 using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
+using System.IO;
 
 namespace QuillLib.Lua
 {
@@ -58,6 +59,8 @@ namespace QuillLib.Lua
         [MoonSharpUserData]
         private class QuillLuaData
         {
+            private static string _imageFolderPath = Application.streamingAssetsPath + "/IMAGE/";
+
             public static int screenHeight          => Screen.height;
             public static int screenWidth           => Screen.width;
 
@@ -93,6 +96,28 @@ namespace QuillLib.Lua
             public static void log(string log)
             {
                 Debug.Log(log);
+            }
+
+            public static void setSprite(QuillBoxProxy box, string path)
+            {
+                var finalPath = _imageFolderPath + path;
+                if (System.IO.File.Exists(finalPath))
+                {
+                    byte[] bytes = System.IO.File.ReadAllBytes(finalPath);
+                    Texture2D tex = new Texture2D(2, 2);
+                    tex.LoadImage(bytes);
+ 
+                    var sprite = Sprite.Create(tex,
+                                               new Rect(0.0f, 0.0f, tex.width, tex.height),
+                                               new Vector2(0.5f, 0.5f),
+                                               100.0f);
+
+                    if (Quill.elements.ContainsKey(box.getId()))
+                    {
+                        var target = Quill.elements[box.getId()];
+                        target.GetComponent<QuillBox>().sprite = sprite;
+                    }
+                }
             }
         }
     }

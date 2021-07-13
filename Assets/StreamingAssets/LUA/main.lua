@@ -35,18 +35,21 @@ function OnInit()
 
     local button = quill.button()
     button.onClick.add(clickEvent)
+    button.label.setText("this is a button")
+    
     root.addChild(button)
-
+    
     button.setPosition(20,-200)
-
+    
     color = {}
     color.r = 0.4
     color.g = 0.8
     color.b = 0.3
-
+    
     local box = quill.box()
     box.setColor(color.r, color.g, color.b)
     box.setSize(300, 100)
+    quill.setSprite(box, "dices/dice-spritesheet.png");
     root.addChild(box)
 
     timeLabel = quill.label("time")

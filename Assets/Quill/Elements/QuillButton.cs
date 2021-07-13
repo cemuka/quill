@@ -5,6 +5,7 @@ namespace QuillLib
     public class QuillButton : Button, IQuillElement
     {
         public QuillLabel label;
+        public QuillBox box;
         
         public QuillElement element;
         public int id => element.id;

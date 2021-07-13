@@ -2,7 +2,7 @@
 
 This project created to explore unity modding capabilities in mind. Idea is providing a scripting api to community to make user interfaces after game released(like wow, don't starve, etc.)
  
- Quill is just a small wrapper based on pure Text Mesh Pro. You can create UI using its c# api, programmatically.
+ Quill is just a small wrapper based on pure UnityUI. You can create UI using its c# api, programmatically.
 
 
 ```csharp
@@ -65,10 +65,6 @@ end
 
 
 ## This project is far far away from complete, heavily WIP.
-
-
-### dependencies
-Text Mesh Pro
 
 ### Lua event hooks
 ```lua

@@ -53,7 +53,12 @@ namespace QuillLib
         public static QuillElement  CreateEmpty()
         {
             var elementGO       = new GameObject("Empty");
-            var element         = elementGO.AddComponent<QuillElement>();
+            var element         = elementGO.GetComponent<QuillElement>();
+            
+            if (element == null)
+            {
+                element         = elementGO.AddComponent<QuillElement>();
+            }
 
             element.id = SetId();
             elements.Add(element.id, element);
@@ -96,11 +101,13 @@ namespace QuillLib
             var element         = CreateEmpty();
             element.name        = "Button";
 
-            element.gameObject.AddComponent<Image>();
             var button          = element.gameObject.AddComponent<QuillButton>();
+            button.box          = element.gameObject.AddComponent<QuillBox>();
             button.element      = element;
+            button.box.element  = element;
             button.label        = CreateLabel(text);
             button.label.transform.SetParent(button.transform);
+            button.targetGraphic= button.box;
 
 
             return button;

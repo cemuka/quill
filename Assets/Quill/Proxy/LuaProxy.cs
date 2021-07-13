@@ -32,8 +32,11 @@ namespace QuillLib.Lua
 
         public void addChild(QuillElementProxy target)
         {
-            var element = Quill.elements[target.getId()];
-            _target.root.Add(element);
+            if (Quill.elements.ContainsKey(target.getId()))
+            {
+                var element = Quill.elements[target.getId()];
+                _target.root.Add(element);
+            }
         }
 
         public void setPivot(float x, float y)
@@ -109,6 +112,8 @@ namespace QuillLib.Lua
     [MoonSharpUserData]
     public class QuillButtonProxy : QuillElementProxy
     {
+        public QuillBoxProxy box;
+        public QuillLabelProxy label;
         public event Action onClick;
 
         private QuillButton _target;
@@ -116,7 +121,10 @@ namespace QuillLib.Lua
         [MoonSharpHidden]
         public QuillButtonProxy(QuillButton button) : base(button)
         {
-            _target = button;
+            _target     = button;
+            label       = new QuillLabelProxy(_target.label);
+            box         = new QuillBoxProxy(_target.box);
+            
             _target.onClick.AddListener(
                 () => onClick?.Invoke()
             );
