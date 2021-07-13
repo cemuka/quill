@@ -7,6 +7,7 @@ local timer         = 0
 local timerStarted  = false
 
 local inform        = nil
+local test = require "test"
 
 function clickEvent()
     inform = quill.label("you have clicked!")
@@ -25,10 +26,15 @@ end
 
 function OnInit()
 
+
+    test.greeter()
+
+
     timer        = 3.0
     timerStarted = false
 
     root    = quill.mainRoot()
+
 
     quill.log(quill.screenHeight)
     quill.log(quill.screenWidth)

@@ -3,27 +3,36 @@ using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
 using System.IO;
+using MoonSharp.Interpreter.Loaders;
 
 namespace QuillLib.Lua
 {
     public class QuillLua
     {
-        private static QuillLuaData _data;
         private static Script _script;
         private static DynValue _updateResult;
 
         public static void Run()
         {
+            var path = System.IO.Path.Combine(Application.streamingAssetsPath, "LUA/");
+            _script = new Script();
+            _script.Options.ScriptLoader = new FileSystemScriptLoader()
+            {
+                ModulePaths = new string[] { path+"?", path + "?.lua" }
+            };
+
             UserData.RegisterAssembly();
-            var path = System.IO.Path.Combine(Application.streamingAssetsPath, "LUA/main.lua");
-            var code = System.IO.File.ReadAllText(path);
+            _script.Globals["quill"] = new QuillLuaData();
+            
+            var filePaths = Directory.GetFiles(path, "*.lua");
 
-            _data   = new QuillLuaData();
-            _script = new Script(); 
-
-            _script.Globals["quill"] = _data;
-            _script.DoString(code);
-
+            var total = string.Empty;
+            foreach (var p in filePaths)
+            {
+                total += System.IO.File.ReadAllText(p);
+            }
+            _script.DoString(total);
+            
             _script.Call(_script.Globals["OnInit"]);
         }
 
