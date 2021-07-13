@@ -1,14 +1,24 @@
 using UnityEngine;
-using UnityEngine.UI;
+
 namespace QuillLib
 {
-    public class QuillBox : Image, IQuillElement
+    public interface IQuillElement
     {
-        public QuillElement element;
+        int id { get; }
+        ElementRoot root { get; }
+        void SetPivot(float x, float y);
+        void SetSize(float x, float y);
+        void SetPosition(float x, float y);
+        void SetAnchorsMin(float x, float y);
+        void SetAnchorsMax(float x, float y);
+        void SetDefaultTransformValues();
+    }
 
-        public int id => element.id;
-        public ElementRoot root => element.root; 
-        
+    public class QuillElement : MonoBehaviour, IQuillElement
+    {
+        public int id { get; set; }
+        public ElementRoot root { get; set; }
+
         public void SetPivot(float x, float y)
         {
             root.rectTransform.pivot = new Vector2(x, y);
@@ -32,6 +42,17 @@ namespace QuillLib
             SetPivot(0, 1);
             SetAnchorsMin(0,1);
             SetAnchorsMax(0,1);
+        }
+    }
+    
+    public class ElementRoot
+    {
+        public RectTransform rectTransform;
+
+        public void Add(IQuillElement element)
+        {
+            element.root.rectTransform.SetParent(rectTransform);
+            element.root.rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 }

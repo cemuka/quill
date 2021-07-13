@@ -3,7 +3,7 @@ using UnityEngine;
 using QuillLib.Lua;
 using System;
 
-public class AppStartup : MonoBehaviour
+public class AppStartupLua : MonoBehaviour
 {
     private void Start()
     {

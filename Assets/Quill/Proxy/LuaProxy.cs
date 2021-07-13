@@ -13,9 +13,9 @@ namespace QuillLib.Lua
     [MoonSharpUserData]
     public class QuillElementProxy
     {
-        private QuillElement _target;
+        private IQuillElement _target;
 
-        public QuillElementProxy(QuillElement element)
+        public QuillElementProxy(IQuillElement element)
         {
             _target = element;
         }
@@ -27,7 +27,7 @@ namespace QuillLib.Lua
 
         public void destroy()
         {
-            MonoBehaviour.Destroy(_target.gameObject);
+            MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
         }
 
         public void addChild(QuillElementProxy target)
@@ -68,19 +68,19 @@ namespace QuillLib.Lua
         private QuillLabel _target;
 
         [MoonSharpHidden]
-        public QuillLabelProxy(QuillLabel label) : base(label)
+        public QuillLabelProxy(QuillLabel label): base(label)
         {
             _target = label;
         }
 
         public string getText()
         {
-            return _target.Text.text;
+            return _target.text;
         }
 
         public void setText(string text)
         {
-            _target.Text.text = text;
+            _target.text = text;
         }
     }
 
@@ -97,12 +97,12 @@ namespace QuillLib.Lua
 
         public void setColor(float r, float g, float b) 
         {
-            _target.boxImage.color = new Color(r,g,b);
+            _target.color = new Color(r,g,b);
         }
 
         public void setColor(float r, float g, float b, float a) 
         {
-            _target.boxImage.color = new Color(r,g,b,a);
+            _target.color = new Color(r,g,b,a);
         }
     }
 
@@ -117,7 +117,7 @@ namespace QuillLib.Lua
         public QuillButtonProxy(QuillButton button) : base(button)
         {
             _target = button;
-            _target.button.onClick.AddListener(
+            _target.onClick.AddListener(
                 () => onClick?.Invoke()
             );
         }

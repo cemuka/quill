@@ -1,12 +1,16 @@
+using MoonSharp.Interpreter;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace QuillLib
 {
-    public class QuillElement : MonoBehaviour
+    public class QuillLabel : Text, IQuillElement
     {
-        public int id;
-        public ElementRoot root;
+        public QuillElement element;
 
+        public int id => element.id;
+        public ElementRoot root => element.root; 
+        
         public void SetPivot(float x, float y)
         {
             root.rectTransform.pivot = new Vector2(x, y);
@@ -30,17 +34,6 @@ namespace QuillLib
             SetPivot(0, 1);
             SetAnchorsMin(0,1);
             SetAnchorsMax(0,1);
-        }
-    }
-    
-    public class ElementRoot
-    {
-        public RectTransform rectTransform;
-
-        public void Add(QuillElement element)
-        {
-            element.root.rectTransform.SetParent(rectTransform);
-            element.root.rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 }

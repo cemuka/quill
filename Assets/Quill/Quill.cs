@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MoonSharp.Interpreter;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,11 +12,16 @@ namespace QuillLib
         public static ElementRoot   mainRoot => mainCanvasElement.root;
         public static QuillElement  mainCanvasElement;
         public static Message       message;
-        
-        
-
         public static Dictionary<int, QuillElement> elements;
+        
+        
+        private static Font _defaultFont;
         private static int _maxId;
+        private static int SetId()
+        {
+            return _maxId++;
+        }
+
 
         public static void Init()
         {
@@ -43,35 +46,20 @@ namespace QuillLib
             mainCanvasElement.id = -1;
             mainCanvasElement.root = new ElementRoot();
             mainCanvasElement.root.rectTransform = (RectTransform)mainCanvas.transform;
+
+            _defaultFont =  Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         }
      
-        
-
-
-        private static int SetId()
+        public static QuillElement  CreateEmpty()
         {
-            return _maxId++;
-        }
-
-
-
-        private static QuillElement MakeElement(GameObject elementGO)
-        {
-            var element = elementGO.GetComponent<QuillElement>();
-            if (element == null)
-            {
-                element = elementGO.AddComponent<QuillElement>();
-            }
+            var elementGO       = new GameObject("Empty");
+            var element         = elementGO.AddComponent<QuillElement>();
 
             element.id = SetId();
             elements.Add(element.id, element);
 
             element.root = new ElementRoot();
-            element.root.rectTransform = elementGO.GetComponent<RectTransform>();
-            if (element.root.rectTransform == null)
-            {
-                element.root.rectTransform = elementGO.AddComponent<RectTransform>();
-            }
+            element.root.rectTransform = elementGO.AddComponent<RectTransform>();
             
             element.SetDefaultTransformValues();
             element.root.rectTransform.sizeDelta = new Vector2(100, 30);
@@ -79,59 +67,44 @@ namespace QuillLib
             return element;
         }
 
-        public static QuillElement  CreateEmpty()
-        {
-            var elementGO           = new GameObject("Empty");
-            //  elementGO.transform.SetParent(mainRoot.rectTransform);
-            QuillElement element    = MakeElement(elementGO);
-
-            return element;
-        }
-
         public static QuillLabel    CreateLabel(string text)
         {
-            var elementGO           = TMP_DefaultControls.CreateText(new TMP_DefaultControls.Resources());
-            var label               = elementGO.AddComponent<QuillLabel>();
-            
-            var element             = MakeElement(elementGO);
-            element.name            = "Label";
-            
-            label.Text              = elementGO.GetComponent<TMP_Text>();
-            label.Text.text         = text;
+            var element = CreateEmpty();
+            element.name = "Label";
+            var label = element.gameObject.AddComponent<QuillLabel>();
+            label.element = element;
+            label.text = text;
+            label.font = _defaultFont;
 
             return label;
         }
 
         public static QuillBox      CreateBox(Color color)
         {
-            var elementGO           = new GameObject("Box");
-            var box                 = elementGO.AddComponent<QuillBox>();
+            var element         = CreateEmpty();
+            element.name        = "Box";
             
-            var element             = MakeElement(elementGO);
-            
-            box.boxImage            = elementGO.AddComponent<Image>();
-            box.SetColor(color);
+            var box             = element.gameObject.AddComponent<QuillBox>();
+            box.element         = element;
+            box.color           = color;
 
             return box;
         }
 
-        public static QuillButton   CreateButton(string label)
+        public static QuillButton   CreateButton(string text)
         {
-            var elementGO           = TMP_DefaultControls.CreateButton(new TMP_DefaultControls.Resources());
-            var button              = elementGO.AddComponent<QuillButton>();
-            
-            var element             = MakeElement(elementGO);
-            element.name            = "Button";
-            
-            button.button           = elementGO.GetComponent<Button>();
-            var labelText           = elementGO.GetComponentInChildren<TMP_Text>();
+            var element         = CreateEmpty();
+            element.name        = "Button";
+
+            element.gameObject.AddComponent<Image>();
+            var button          = element.gameObject.AddComponent<QuillButton>();
+            button.element      = element;
+            button.label        = CreateLabel(text);
+            button.label.transform.SetParent(button.transform);
 
 
             return button;
         }
-
-    
-
 
     }
 }
