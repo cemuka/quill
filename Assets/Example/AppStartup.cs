@@ -1,25 +1,39 @@
 using QuillLib;
 using UnityEngine;
 using QuillLib.Lua;
+using System;
 
 public class AppStartup : MonoBehaviour
 {
     private void Start()
     {
-        Application.targetFrameRate = 30;
-
         Quill.Init();
         QuillLua.Run();
 
+        Quill.message.Register(PressSpace);
+    }
 
-        // var label = Quill.CreateLabel("hello world");
-        // label.SetSize(100, 30);
-        // label.SetPosition(100, 100);
-        // Quill.mainRoot.Add(label);
+    private void PressSpace(MessageData data)
+    {
+        Debug.Log(data.id);
     }
 
     private void Update()
     {
-        QuillLua.Update();
+        // QuillLua.Update();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            var data = new MessageData()
+            {
+                id = "space"
+            };
+            Quill.message.Post(data);
+            QuillLua.MessagePost(data);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // QuillLua.Exit();
     }
 }

@@ -1,10 +1,43 @@
 
-local timePassed = 0
-local timeLabel = nil
+local timePassed    = 0
+local timeLabel     = nil
+local root          = nil
 
-function Init()
+local timer         = 0
+local timerStarted  = false
 
-    local root = quill.empty()
+local inform        = nil
+
+function clickEvent()
+    inform = quill.label("you have clicked!")
+    root.addChild(inform)
+
+    inform.setPosition(500,-300)
+
+    timerStarted = true
+end
+
+function handler(id, data)
+    if id == "space" then
+        quill.log("msg id: " .. id .. " handled.")
+    end
+end
+
+function OnInit()
+
+    timer        = 3.0
+    timerStarted = false
+
+    root    = quill.mainRoot()
+
+    quill.log(quill.screenHeight)
+    quill.log(quill.screenWidth)
+
+    local button = quill.button()
+    button.onClick.add(clickEvent)
+    root.addChild(button)
+
+    button.setPosition(20,-200)
 
     color = {}
     color.r = 0.4
@@ -22,7 +55,26 @@ function Init()
     root.addChild(timeLabel)
 end
 
-function OnUpdate(dt)
-    timePassed = timePassed + dt
-    timeLabel.setText("time: " .. string.format("%.2f", timePassed))
+function OnMessage(data)
+    if data.id == "space" then
+        quill.log("lua handled.")
+    end
 end
+
+-- function OnUpdate(dt)
+
+--     if timer < 0 then
+--         inform.destroy()
+
+--         timerStarted = false;
+--         timer = 3
+--     end
+
+--     if timerStarted then
+--         timer = timer - dt
+--     end
+-- end
+
+-- function OnExit()
+--     quill.log("program exit")
+-- end

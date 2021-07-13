@@ -10,6 +10,7 @@ namespace QuillLib.Lua
     {
         private static QuillLuaData _data;
         private static Script _script;
+        private static DynValue _updateResult;
 
         public static void Run()
         {
@@ -23,40 +24,70 @@ namespace QuillLib.Lua
             _script.Globals["quill"] = _data;
             _script.DoString(code);
 
-            _script.Call(_script.Globals["Init"]);
+            _script.Call(_script.Globals["OnInit"]);
         }
-
 
         public static void Update()
         {
-            _script.Call(_script.Globals["OnUpdate"], Time.deltaTime);
+            _updateResult = _script.Globals.Get("OnUpdate");
+            if (_updateResult.Function != null)
+            {
+                _script.Call(_updateResult, Time.deltaTime);
+            }
+        }
+
+        public static void Exit()
+        {
+            var result =  _script.Globals.Get("OnExit");
+            if (result.Function != null)
+            {
+                _script.Call(result);
+            }
         }
         
+        public static void MessagePost(MessageData data)
+        {
+            var dataProxy = new MessageDataProxy()
+            {
+                id = data.id,
+                data = data.data
+            };
+            _script.Call(_script.Globals["OnMessage"], dataProxy);
+        }
+
         [MoonSharpUserData]
         private class QuillLuaData
         {
+            public static int screenHeight          => Screen.height;
+            public static int screenWidth           => Screen.width;
+
+            public static QuillElementProxy mainRoot()
+            {
+                return new QuillElementProxy(Quill.mainCanvasElement);
+            }
+
             public static QuillElementProxy empty()
             {
                 var target = Quill.CreateEmpty();
-                Quill.mainRoot.Add(target);
-
                 return new QuillElementProxy(target);
             }
 
             public static QuillLabelProxy label(string text)
             {
                 var target = Quill.CreateLabel(text);
-                Quill.mainRoot.Add(target);
-
                 return new QuillLabelProxy(target);
             }
 
             public static QuillBoxProxy box()
             {
                 var target = Quill.CreateBox(Color.clear);
-                Quill.mainRoot.Add(target);
-
                 return new QuillBoxProxy(target);
+            }
+
+            public static QuillButtonProxy button()
+            {
+                var target = Quill.CreateButton("");
+                return new QuillButtonProxy(target);
             }
 
             public static void log(string log)

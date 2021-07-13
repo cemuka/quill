@@ -10,8 +10,12 @@ namespace QuillLib
 {
     public class Quill
     {
-        public static Canvas mainCanvas;
-        public static ElementRoot mainRoot;
+        public static Canvas        mainCanvas;
+        public static ElementRoot   mainRoot => mainCanvasElement.root;
+        public static QuillElement  mainCanvasElement;
+        public static Message       message;
+        
+        
 
         public static Dictionary<int, QuillElement> elements;
         private static int _maxId;
@@ -19,6 +23,7 @@ namespace QuillLib
         public static void Init()
         {
             elements = new Dictionary<int, QuillElement>();
+            message = new Message();
 
             var canvasGO = new GameObject("QuillCanvas");
             mainCanvas = canvasGO.AddComponent<Canvas>();
@@ -34,14 +39,21 @@ namespace QuillLib
                 eventSystemGO.AddComponent<StandaloneInputModule>();
             }
 
-            mainRoot = new ElementRoot();
-            mainRoot.rectTransform = (RectTransform)mainCanvas.transform;
+            mainCanvasElement = mainCanvas.gameObject.AddComponent<QuillElement>();
+            mainCanvasElement.id = -1;
+            mainCanvasElement.root = new ElementRoot();
+            mainCanvasElement.root.rectTransform = (RectTransform)mainCanvas.transform;
         }
      
+        
+
+
         private static int SetId()
         {
             return _maxId++;
         }
+
+
 
         private static QuillElement MakeElement(GameObject elementGO)
         {
@@ -66,8 +78,6 @@ namespace QuillLib
             element.root.rectTransform.anchoredPosition = Vector2.zero;
             return element;
         }
-
-
 
         public static QuillElement  CreateEmpty()
         {
@@ -104,6 +114,24 @@ namespace QuillLib
 
             return box;
         }
+
+        public static QuillButton   CreateButton(string label)
+        {
+            var elementGO           = TMP_DefaultControls.CreateButton(new TMP_DefaultControls.Resources());
+            var button              = elementGO.AddComponent<QuillButton>();
+            
+            var element             = MakeElement(elementGO);
+            element.name            = "Button";
+            
+            button.button           = elementGO.GetComponent<Button>();
+            var labelText           = elementGO.GetComponentInChildren<TMP_Text>();
+
+
+            return button;
+        }
+
     
+
+
     }
 }

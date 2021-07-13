@@ -1,8 +1,15 @@
+using System;
 using MoonSharp.Interpreter;
 using UnityEngine;
 
 namespace QuillLib.Lua
 {
+    [MoonSharpUserData]
+    public class MessageDataProxy
+    {
+        public string id;
+        public object data;
+    }
     [MoonSharpUserData]
     public class QuillElementProxy
     {
@@ -16,6 +23,11 @@ namespace QuillLib.Lua
         public int getId()
         {
             return _target.id;
+        }
+
+        public void destroy()
+        {
+            MonoBehaviour.Destroy(_target.gameObject);
         }
 
         public void addChild(QuillElementProxy target)
@@ -42,7 +54,7 @@ namespace QuillLib.Lua
         public void setAnchorsMin(float x, float y){ _target.root.rectTransform.anchorMin = new Vector2(x, y); }
         public void setAnchorsMax(float x, float y){ _target.root.rectTransform.anchorMax = new Vector2(x, y); }
 
-        public void SetDefaultTransformValues()
+        public void setDefaultTransformValues()
         {
             setPivot(0, 1);
             setAnchorsMin(0,1);
@@ -50,7 +62,6 @@ namespace QuillLib.Lua
         }
     }
 
-        
     [MoonSharpUserData]
     public class QuillLabelProxy : QuillElementProxy
     {
@@ -94,5 +105,23 @@ namespace QuillLib.Lua
             _target.boxImage.color = new Color(r,g,b,a);
         }
     }
+
+    [MoonSharpUserData]
+    public class QuillButtonProxy : QuillElementProxy
+    {
+        public event Action onClick;
+
+        private QuillButton _target;
+
+        [MoonSharpHidden]
+        public QuillButtonProxy(QuillButton button) : base(button)
+        {
+            _target = button;
+            _target.button.onClick.AddListener(
+                () => onClick?.Invoke()
+            );
+        }
+    }
+
 
 }
