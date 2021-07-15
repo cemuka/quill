@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using UnityEngine;
 
@@ -8,7 +9,16 @@ namespace QuillLib.Lua
     public class MessageDataProxy
     {
         public string id;
-        public object data;
+        public Table container;
+        public MessageDataProxy(MessageData data)
+        {
+            id = data.id;
+            container = new Table(QuillLua.MainScript());
+            foreach (var item in data.container)
+            {
+                container[item.Key] = item.Value;
+            }
+        }
     }
     [MoonSharpUserData]
     public class QuillElementProxy
@@ -27,7 +37,11 @@ namespace QuillLib.Lua
 
         public void destroy()
         {
-            MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
+            if (Quill.elements.ContainsKey(_target.id))
+            {
+                Quill.elements.Remove(_target.id);
+                MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
+            }
         }
 
         public void addChild(QuillElementProxy target)
@@ -107,6 +121,45 @@ namespace QuillLib.Lua
         {
             _target.color = new Color(r,g,b,a);
         }
+
+        public void setColor(Table color)
+        {
+            var r = (float)color.Get("r").Number;
+            var g = (float)color.Get("g").Number;
+            var b = (float)color.Get("b").Number;
+             
+            var alpha = color.Get("a");
+            float a = 1;
+
+            if (alpha.IsNotNil())
+            {
+                a = (float)alpha.Number;
+            }
+
+            setColor(r,g,b,a);
+        }
+
+        public void sprite(string path)
+        {
+            var finalPath = QuillLua.IMG_FOLDER_PATH + path;
+            if (System.IO.File.Exists(finalPath))
+            {
+                if (Quill.elements.ContainsKey(_target.id))
+                {
+                    byte[] bytes = System.IO.File.ReadAllBytes(finalPath);
+                    Texture2D tex = new Texture2D(2, 2);
+                    tex.LoadImage(bytes);
+
+                    var sprite = Sprite.Create(tex,
+                                                new Rect(0.0f, 0.0f, tex.width, tex.height),
+                                                new Vector2(0.5f, 0.5f),
+                                                100.0f);
+
+                    var target = Quill.elements[_target.id];
+                    target.GetComponent<QuillBox>().sprite = sprite;
+                }
+            }
+        }
     }
 
     [MoonSharpUserData]
@@ -131,5 +184,5 @@ namespace QuillLib.Lua
         }
     }
 
-
+    
 }

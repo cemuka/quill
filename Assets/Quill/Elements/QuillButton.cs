@@ -4,10 +4,11 @@ namespace QuillLib
 {
     public class QuillButton : Button, IQuillElement
     {
-        public QuillLabel label;
-        public QuillBox box;
-        
         public QuillElement element;
+        public QuillLabel label;
+        public QuillBox box;        
+
+        //  IQuillElement implementation
         public int id => element.id;
         public ElementRoot root => element.root; 
         

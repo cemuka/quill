@@ -8,6 +8,9 @@ namespace QuillLib
     {
         public QuillElement element;
 
+
+
+        //  IQuillElement implementation
         public int id => element.id;
         public ElementRoot root => element.root; 
         

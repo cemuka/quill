@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MoonSharp.Interpreter;
 
 namespace QuillLib
@@ -26,6 +27,6 @@ namespace QuillLib
     public class MessageData
     {
         public string id;
-        public object data;
+        public Dictionary<string, object> container;
     }
 }

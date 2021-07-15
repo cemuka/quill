@@ -2,6 +2,7 @@ using QuillLib;
 using UnityEngine;
 using QuillLib.Lua;
 using System;
+using System.Collections.Generic;
 
 public class AppStartupLua : MonoBehaviour
 {
@@ -25,8 +26,11 @@ public class AppStartupLua : MonoBehaviour
         {
             var data = new MessageData()
             {
-                id = "space"
+                id = "space",
+                container = new Dictionary<string, object>()
             };
+            data.container.Add("score", 3);
+            data.container.Add("player", "cemuka");
             Quill.message.Post(data);
             QuillLua.MessagePost(data);
         }

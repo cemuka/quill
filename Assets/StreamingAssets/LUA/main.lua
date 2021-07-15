@@ -7,7 +7,8 @@ local timer         = 0
 local timerStarted  = false
 
 local inform        = nil
-local test = require "test"
+
+local test  = require("lib/test")
 
 function clickEvent()
     inform = quill.label("you have clicked!")
@@ -26,7 +27,6 @@ end
 
 function OnInit()
 
-
     test.greeter()
 
 
@@ -39,9 +39,8 @@ function OnInit()
     quill.log(quill.screenHeight)
     quill.log(quill.screenWidth)
 
-    local button = quill.button()
+    local button = quill.button("this is a button")
     button.onClick.add(clickEvent)
-    button.label.setText("this is a button")
     
     root.addChild(button)
     
@@ -51,11 +50,13 @@ function OnInit()
     color.r = 0.4
     color.g = 0.8
     color.b = 0.3
+    color.a = 0.1
     
     local box = quill.box()
-    box.setColor(color.r, color.g, color.b)
+    box.setColor(color)
     box.setSize(300, 100)
-    quill.setSprite(box, "dices/dice-spritesheet.png");
+    box.sprite("dices/dice-spritesheet.png");
+
     root.addChild(box)
 
     timeLabel = quill.label("time")
@@ -66,7 +67,9 @@ end
 
 function OnMessage(data)
     if data.id == "space" then
-        quill.log("lua handled.")
+
+        quill.log(data.container.player)
+        quill.log(data.container.score)
     end
 end
 
