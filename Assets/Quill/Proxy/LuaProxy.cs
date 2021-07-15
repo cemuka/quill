@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace QuillLib.Lua
 {
@@ -99,6 +100,34 @@ namespace QuillLib.Lua
         {
             _target.text = text;
         }
+
+        public void setColor(float r, float g, float b) 
+        {
+            _target.color = new Color(r,g,b);
+        }
+
+        public void setColor(float r, float g, float b, float a) 
+        {
+            _target.color = new Color(r,g,b,a);
+        }
+
+        public void setColor(Table color)
+        {
+            var r = (float)color.Get("r").Number;
+            var g = (float)color.Get("g").Number;
+            var b = (float)color.Get("b").Number;
+             
+            var alpha = color.Get("a");
+            float a = 1;
+
+            if (alpha.IsNotNil())
+            {
+                a = (float)alpha.Number;
+            }
+
+            setColor(r,g,b,a);
+        }
+
     }
 
     [MoonSharpUserData]
@@ -139,26 +168,74 @@ namespace QuillLib.Lua
             setColor(r,g,b,a);
         }
 
-        public void sprite(string path)
+        public void sprite(string path, Table options)
         {
             var finalPath = QuillLua.IMG_FOLDER_PATH + path;
             if (System.IO.File.Exists(finalPath))
             {
                 if (Quill.elements.ContainsKey(_target.id))
                 {
-                    byte[] bytes = System.IO.File.ReadAllBytes(finalPath);
-                    Texture2D tex = new Texture2D(2, 2);
-                    tex.LoadImage(bytes);
+                    // Vector2 pivot
+                    // float pixelsPerUnit
+                    // uint extrude
+                    // SpriteMeshType meshType
+                    // Vector4 border
+                    var filterMode       = (FilterMode)Enum.Parse(typeof(FilterMode), options.Get("filterMode").String, true);
+                    var pivot           = new Vector2(  (float)options.Get("pivotX").Number, 
+                                                        (float)options.Get("pivotY").Number);
+                    var extrude         =               (uint)options.Get("extrude").Number;
+                    var pixelsPerUnit   =               (float)options.Get("pixelsPerUnit").Number;
+                    var border          = new Vector4(  (float)options.Get("borderX").Number,
+                                                        (float)options.Get("borderY").Number,
+                                                        (float)options.Get("borderZ").Number,
+                                                        (float)options.Get("borderW").Number);
 
-                    var sprite = Sprite.Create(tex,
-                                                new Rect(0.0f, 0.0f, tex.width, tex.height),
-                                                new Vector2(0.5f, 0.5f),
-                                                100.0f);
 
-                    var target = Quill.elements[_target.id];
-                    target.GetComponent<QuillBox>().sprite = sprite;
+                    CreateSprite(finalPath, filterMode, pivot, pixelsPerUnit, extrude, border);
                 }
             }
+        }
+
+        public void sprite(string path)
+        {
+            sprite(path, DefaultSpriteOptions());
+        }
+
+        public void setImageType(string imageType)
+        {
+            var type = (Image.Type)Enum.Parse(typeof(Image.Type), imageType, true);
+            _target.type = type;
+        }
+
+        private static Table DefaultSpriteOptions()
+        {
+            var options = new Table(QuillLua.MainScript());
+
+            options["filterMode"]        = "Bilinear";
+            options["pivotX"]           = 0.5f;
+            options["pivotY"]           = 0.5f;
+            options["extrude"]          = 0f;
+            options["pixelsPerUnit"]    = 100f;
+            options["borderX"]          = 0f;
+            options["borderY"]          = 0f;
+            options["borderZ"]          = 0f;
+            options["borderW"]          = 0f;
+
+            return options;
+        }
+    
+        private void CreateSprite(string finalPath, FilterMode filterMode, Vector2 pivot, float pixelsPerUnit, uint extrude, Vector4 border)
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(finalPath);
+            var tex = new Texture2D(2,2);
+            tex.LoadImage(bytes);
+            tex.filterMode = filterMode;
+            var rect = new Rect(0, 0, tex.width, tex.height);
+
+            var sprite = Sprite.Create(tex, rect, pivot, pixelsPerUnit, extrude, SpriteMeshType.FullRect, border);
+
+            var target = Quill.elements[_target.id];
+            target.GetComponent<QuillBox>().sprite = sprite;
         }
     }
 

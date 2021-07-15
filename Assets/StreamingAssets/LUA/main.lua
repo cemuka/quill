@@ -51,11 +51,24 @@ function OnInit()
     color.g = 0.8
     color.b = 0.3
     color.a = 0.1
+
+    options = {}
+    options.filterMode = "Point"
+    options.pivotX = 0.5
+    options.pivotY = 0.5
+    options.extrude = 0
+    options.pixelsPerUnit = 100
+    options.borderX = 3
+    options.borderY = 3
+    options.borderZ = 3
+    options.borderW = 3
+
     
     local box = quill.box()
     box.setColor(color)
     box.setSize(300, 100)
-    box.sprite("dices/dice-spritesheet.png");
+    box.sprite("body.png", options);
+    box.setImageType("Sliced");
 
     root.addChild(box)
 
