@@ -1,81 +1,89 @@
 
-local timePassed    = 0
-local timeLabel     = nil
+-- local timePassed    = 0
+-- local timeLabel     = nil
+
+-- local timer         = 0
+-- local timerStarted  = false
+
+-- local inform        = nil
+
+-- local test  = require("lib/test")
 local root          = nil
 
-local timer         = 0
-local timerStarted  = false
+-- function clickEvent()
+--     inform = quill.label("you have clicked!")
+--     root.addChild(inform)
 
-local inform        = nil
+--     inform.setPosition(500,-300)
 
-local test  = require("lib/test")
+--     timerStarted = true
+-- end
 
-function clickEvent()
-    inform = quill.label("you have clicked!")
-    root.addChild(inform)
-
-    inform.setPosition(500,-300)
-
-    timerStarted = true
-end
-
-function handler(id, data)
-    if id == "space" then
-        quill.log("msg id: " .. id .. " handled.")
-    end
-end
+-- function handler(id, data)
+--     if id == "space" then
+--         quill.log("msg id: " .. id .. " handled.")
+--     end
+-- end
 
 function OnInit()
-
-    test.greeter()
-
-
-    timer        = 3.0
-    timerStarted = false
-
     root    = quill.mainRoot()
-
-
-    quill.log(quill.screenHeight)
-    quill.log(quill.screenWidth)
-
-    local button = quill.button("this is a button")
-    button.onClick.add(clickEvent)
+    local firaCode = "Fira Code"
+    quill.loadFont(firaCode, 24);
     
-    root.addChild(button)
+    local label1 = quill.label("label1")
+    local label2 = quill.label("label2")
+    label2.setFont(firaCode)
     
-    button.setPosition(20,-200)
+    quill.setDefaultFont(firaCode)
     
-    color = {}
-    color.r = 0.4
-    color.g = 0.8
-    color.b = 0.3
-    color.a = 0.1
+    
+    local label3 = quill.label("label3")
 
-    options = {}
-    options.filterMode = "Point"
-    options.pivotX = 0.5
-    options.pivotY = 0.5
-    options.extrude = 0
-    options.pixelsPerUnit = 100
-    options.borderX = 3
-    options.borderY = 3
-    options.borderZ = 3
-    options.borderW = 3
+    root.addChild(label1)
+    root.addChild(label2)
+    root.addChild(label3)
+
+
+    -- quill.log(quill.screenHeight)
+    -- quill.log(quill.screenWidth)
+
+    -- local button = quill.button("this is a button")
+    -- button.onClick.add(clickEvent)
+    
+    -- root.addChild(button)
+    
+    -- button.setPosition(20,-200)
+    
+    -- color = {}
+    -- color.r = 0.4
+    -- color.g = 0.8
+    -- color.b = 0.3
+    -- color.a = 0.1
+
+    -- options = {}
+    -- options.filterMode = "Point"
+    -- options.pivotX = 0.5
+    -- options.pivotY = 0.5
+    -- options.extrude = 0
+    -- options.pixelsPerUnit = 100
+    -- options.borderX = 3
+    -- options.borderY = 3
+    -- options.borderZ = 3
+    -- options.borderW = 3
 
     
-    local box = quill.box()
-    box.setColor(color)
-    box.setSize(300, 100)
-    box.sprite("body.png", options);
-    box.setImageType("Sliced");
+    -- local box = quill.box()
+    -- box.setColor(color)
+    -- box.setSize(300, 100)
+    -- box.sprite("body.png", options);
+    -- box.setImageType("Sliced");
 
-    root.addChild(box)
+    -- root.addChild(box)
 
-    timeLabel = quill.label("time")
-    timeLabel.setSize(300, 100)
+    -- timeLabel = quill.label("time")
+    -- timeLabel.setSize(300, 100)
     
-    root.addChild(timeLabel)
+    -- root.addChild(timeLabel)
 end
 
 function OnMessage(data)

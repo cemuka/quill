@@ -4,16 +4,27 @@ using MoonSharp.Interpreter;
 using System;
 using System.IO;
 using MoonSharp.Interpreter.Loaders;
+using System.Collections.Generic;
 
 namespace QuillLib.Lua
 {
     public class QuillLua
     {
-        public static string IMG_FOLDER_PATH = Application.streamingAssetsPath + "/IMAGE/";
+        public static string    IMG_FOLDER_PATH = Application.streamingAssetsPath + "/IMAGE/";
+        public static Dictionary<string, Font> loadedFonts = new Dictionary<string, Font>();
+        public static Font      DefaultFont  
+        {
+            get { return loadedFonts[Quill.defaultFont.name]; }
+            set { DefaultFont = value; }
+        }
 
         private static Script _script;
         private static DynValue _updateResult;
-        public static Script MainScript() { return _script; }
+        
+        public static Script MainScript()
+        {
+             return _script; 
+        }
 
         public static void Run()
         {
@@ -22,6 +33,8 @@ namespace QuillLib.Lua
 
         public static void Run(CoreModules modules)
         {
+            loadedFonts.Add(Quill.defaultFont.name, Quill.defaultFont);
+
             var path = System.IO.Path.Combine(Application.streamingAssetsPath, "LUA/");
             _script = new Script(modules);
             _script.Options.ScriptLoader = new FileSystemScriptLoader()
@@ -102,6 +115,17 @@ namespace QuillLib.Lua
             {
                 var target = Quill.CreateButton(label);
                 return new QuillButtonProxy(target);
+            }
+
+            public static void loadFont(string name, int size)
+            {
+                var font = Font.CreateDynamicFontFromOSFont(name, size);
+                QuillLua.loadedFonts.Add(name, font);
+            }
+
+            public static void setDefaultFont(string name)
+            {
+                QuillLua.DefaultFont = QuillLua.loadedFonts[name];
             }
 
             public static void log(string log)

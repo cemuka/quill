@@ -12,6 +12,7 @@ public class AppStartupLua : MonoBehaviour
         QuillLua.Run();
 
         Quill.message.Register(PressSpace);
+
     }
 
     private void PressSpace(MessageData data)

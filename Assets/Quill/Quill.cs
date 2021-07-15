@@ -12,10 +12,10 @@ namespace QuillLib
         public static ElementRoot   mainRoot => mainCanvasElement.root;
         public static QuillElement  mainCanvasElement;
         public static Message       message;
+        public static Font          defaultFont;
         public static Dictionary<int, QuillElement> elements;
         
         
-        private static Font _defaultFont;
         private static int _maxId;
         private static int SetId()
         {
@@ -47,7 +47,7 @@ namespace QuillLib
             mainCanvasElement.root = new ElementRoot();
             mainCanvasElement.root.rectTransform = (RectTransform)mainCanvas.transform;
 
-            _defaultFont =  Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+            defaultFont =  Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         }
      
         public static QuillElement  CreateEmpty()
@@ -79,7 +79,7 @@ namespace QuillLib
             var label = element.gameObject.AddComponent<QuillLabel>();
             label.element = element;
             label.text = text;
-            label.font = _defaultFont;
+            label.font = defaultFont;
 
             return label;
         }

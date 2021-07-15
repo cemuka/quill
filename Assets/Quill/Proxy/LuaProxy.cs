@@ -89,6 +89,7 @@ namespace QuillLib.Lua
         public QuillLabelProxy(QuillLabel label): base(label)
         {
             _target = label;
+            _target.font = QuillLua.DefaultFont;
         }
 
         public string getText()
@@ -99,6 +100,27 @@ namespace QuillLib.Lua
         public void setText(string text)
         {
             _target.text = text;
+        }
+
+        public string getFont()
+        {
+            return _target.font.name;
+        }
+
+        public void setFont(string fontName)
+        {
+            _target.font = QuillLua.loadedFonts[fontName];
+        }
+
+        public Table getColor()
+        {
+            var color = new Table(QuillLua.MainScript());
+            color["r"] = _target.color.r;
+            color["g"] = _target.color.g;
+            color["b"] = _target.color.b;
+            color["a"] = _target.color.a;
+
+            return color;
         }
 
         public void setColor(float r, float g, float b) 
@@ -139,6 +161,17 @@ namespace QuillLib.Lua
         public QuillBoxProxy(QuillBox box) : base(box)
         {
             _target = box;
+        }
+
+        public Table getColor()
+        {
+            var color = new Table(QuillLua.MainScript());
+            color["r"] = _target.color.r;
+            color["g"] = _target.color.g;
+            color["b"] = _target.color.b;
+            color["a"] = _target.color.a;
+
+            return color;
         }
 
         public void setColor(float r, float g, float b) 

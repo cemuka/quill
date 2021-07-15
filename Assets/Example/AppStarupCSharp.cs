@@ -10,9 +10,20 @@ public class AppStarupCSharp : MonoBehaviour
     {
         Quill.Init();
 
+        var label = Quill.CreateLabel("label");
+
         Quill.mainRoot.Add(Quill.CreateEmpty());
         Quill.mainRoot.Add(Quill.CreateBox(Color.red));
         Quill.mainRoot.Add(Quill.CreateButton("noice button"));
-        Quill.mainRoot.Add(Quill.CreateLabel("label"));
+        Quill.mainRoot.Add(label);
+
+        var fonts = Font.GetOSInstalledFontNames();
+        foreach (var item in fonts)
+        {
+            Debug.Log(item);
+        }
+
+        var firaCode = Font.CreateDynamicFontFromOSFont("Fira Code", 24);
+        label.font = firaCode;
     }
 }
