@@ -10,20 +10,21 @@ public class AppStarupCSharp : MonoBehaviour
     {
         Quill.Init();
 
-        var label = Quill.CreateLabel("label");
+        var box     = Quill.CreateBox(Color.red);
+        box.SetSize(300, 300);
 
-        Quill.mainRoot.Add(Quill.CreateEmpty());
-        Quill.mainRoot.Add(Quill.CreateBox(Color.red));
-        Quill.mainRoot.Add(Quill.CreateButton("noice button"));
-        Quill.mainRoot.Add(label);
+        var label   = Quill.CreateLabel("hello world");
+        box.root.Add(label);
 
-        var fonts = Font.GetOSInstalledFontNames();
-        foreach (var item in fonts)
-        {
-            Debug.Log(item);
-        }
 
-        var firaCode = Font.CreateDynamicFontFromOSFont("Fira Code", 24);
-        label.font = firaCode;
+        label.SetSize(200, 200);
+        label.SetPivot(0.5f, 0.5f);
+        label.SetPosition(150, -150);
+        label.alignment = TextAnchor.MiddleCenter;
+
+
+        box.SetPosition(300, 300);
+
+        Quill.mainRoot.Add(box);
     }
 }

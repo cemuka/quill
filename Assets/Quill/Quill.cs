@@ -8,10 +8,10 @@ namespace QuillLib
 {
     public class Quill
     {
-        public static Canvas        mainCanvas;
-        public static ElementRoot   mainRoot => mainCanvasElement.root;
-        public static QuillElement  mainCanvasElement;
-        public static Message       message;
+        public static ElementRoot   mainRoot            { get => mainCanvasElement.root;}
+        public static Canvas        mainCanvas          { get; private set; }
+        public static QuillElement  mainCanvasElement   { get; private set; }
+        public static Message       message             { get; private set; }
         public static Font          defaultFont;
         public static Dictionary<int, QuillElement> elements;
         
