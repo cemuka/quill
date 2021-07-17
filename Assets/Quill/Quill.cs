@@ -105,9 +105,12 @@ namespace QuillLib
             button.box          = element.gameObject.AddComponent<QuillBox>();
             button.element      = element;
             button.box.element  = element;
-            button.label        = CreateLabel(text);
-            button.label.transform.SetParent(button.transform);
             button.targetGraphic= button.box;
+
+            button.label        = CreateLabel(text);
+            button.label.alignment  = TextAnchor.MiddleCenter;
+            button.label.transform.SetParent(button.transform);
+            // button.label.
 
 
             return button;

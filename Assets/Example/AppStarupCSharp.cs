@@ -6,25 +6,29 @@ using System;
 
 public class AppStarupCSharp : MonoBehaviour
 {
+    QuillButton button;
+
     private void Start()
     {
         Quill.Init();
 
         var box     = Quill.CreateBox(Color.red);
         box.SetSize(300, 300);
-
-        var label   = Quill.CreateLabel("hello world");
-        box.root.Add(label);
-
-
-        label.SetSize(200, 200);
-        label.SetPivot(0.5f, 0.5f);
-        label.SetPosition(150, -150);
-        label.alignment = TextAnchor.MiddleCenter;
-
-
-        box.SetPosition(300, 300);
-
         Quill.mainRoot.Add(box);
+
+        button   = Quill.CreateButton("hello button");
+        
+        button.box.color = Color.blue;
+        button.box.SetSize(200, 40);
+        button.box.SetPosition(50, -50);
+        button.onClick.AddListener(OnButtonClick);
+
+        box.root.Add(button);
+        box.SetPosition(300, -300);
+    }
+    
+    private void OnButtonClick()
+    {
+        button.label.text = "this button clicked";
     }
 }
