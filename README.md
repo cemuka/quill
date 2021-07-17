@@ -1,8 +1,12 @@
+<p align="center">
+  <img width="256" height="168" src="./quill2.png">
+</p>
+
 ## quill
 
 This project created to explore unity modding capabilities in mind. Idea is providing a scripting api to community to make user interfaces after game released(like wow, don't starve, etc.)
  
- Quill is just a small wrapper based on pure UnityUI. You can create UI using its c# api, programmatically.
+Quill is just a small wrapper based on pure UnityUI. You can create UI using its c# api, programmatically.
 
 
 ```csharp
