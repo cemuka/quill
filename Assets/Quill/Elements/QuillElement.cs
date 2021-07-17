@@ -11,7 +11,7 @@ namespace QuillLib
         void SetPosition(float x, float y);
         void SetAnchorsMin(float x, float y);
         void SetAnchorsMax(float x, float y);
-        void SetDefaultTransformValues();
+        void ResetTransform();
         void StretchToParentContainer();
     }
 
@@ -38,7 +38,7 @@ namespace QuillLib
         public void SetAnchorsMin(float x, float y){ root.rectTransform.anchorMin = new Vector2(x, y); }
         public void SetAnchorsMax(float x, float y){ root.rectTransform.anchorMax = new Vector2(x, y); }
 
-        public void SetDefaultTransformValues()
+        public void ResetTransform()
         {
             SetPivot(0, 1);
             SetAnchorsMin(0,1);
@@ -64,6 +64,7 @@ namespace QuillLib
         public void Add(IQuillElement element)
         {
             element.root.rectTransform.SetParent(rectTransform);
+            element.root.rectTransform.anchoredPosition = Vector2.zero;
         }
     }
 }

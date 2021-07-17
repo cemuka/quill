@@ -12,11 +12,6 @@ namespace QuillLib.Lua
     {
         public static string    IMG_FOLDER_PATH = Application.streamingAssetsPath + "/IMAGE/";
         public static Dictionary<string, Font> loadedFonts = new Dictionary<string, Font>();
-        public static Font      DefaultFont  
-        {
-            get { return loadedFonts[Quill.defaultFont.name]; }
-            set { DefaultFont = value; }
-        }
 
         private static Script _script;
         private static DynValue _updateResult;
@@ -34,6 +29,7 @@ namespace QuillLib.Lua
         public static void Run(CoreModules modules)
         {
             loadedFonts.Add(Quill.defaultFont.name, Quill.defaultFont);
+
 
             var path = System.IO.Path.Combine(Application.streamingAssetsPath, "LUA/");
             _script = new Script(modules);
@@ -125,7 +121,8 @@ namespace QuillLib.Lua
 
             public static void setDefaultFont(string name)
             {
-                QuillLua.DefaultFont = QuillLua.loadedFonts[name];
+                var font = QuillLua.loadedFonts[name];
+                Quill.defaultFont = font;
             }
 
             public static void log(string log)

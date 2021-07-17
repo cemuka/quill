@@ -30,7 +30,7 @@ namespace QuillLib
         public void SetAnchorsMin(float x, float y){ element.SetAnchorsMin(x, y); }
         public void SetAnchorsMax(float x, float y){ element.SetAnchorsMin(x, y); }
 
-        public void SetDefaultTransformValues()
+        public void ResetTransform()
         {
             SetPivot(0, 1);
             SetAnchorsMin(0,1);

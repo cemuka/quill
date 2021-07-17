@@ -36,6 +36,9 @@ namespace QuillLib.Lua
             return _target.id;
         }
 
+        public void show(){_target.root.rectTransform.gameObject.SetActive(true);}
+        public void hide(){_target.root.rectTransform.gameObject.SetActive(false);}
+
         public void destroy()
         {
             if (Quill.elements.ContainsKey(_target.id))
@@ -89,7 +92,7 @@ namespace QuillLib.Lua
         public QuillLabelProxy(QuillLabel label): base(label)
         {
             _target = label;
-            _target.font = QuillLua.DefaultFont;
+            _target.font = Quill.defaultFont;
         }
 
         public string getText()

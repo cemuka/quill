@@ -66,9 +66,8 @@ namespace QuillLib
             element.root = new ElementRoot();
             element.root.rectTransform = elementGO.AddComponent<RectTransform>();
             
-            element.SetDefaultTransformValues();
             element.root.rectTransform.sizeDelta = new Vector2(100, 30);
-            element.root.rectTransform.anchoredPosition = Vector2.zero;
+            element.ResetTransform();
             return element;
         }
 
@@ -108,9 +107,9 @@ namespace QuillLib
             button.targetGraphic= button.box;
 
             button.label        = CreateLabel(text);
+            button.root.Add(button.label);
             button.label.alignment  = TextAnchor.MiddleCenter;
-            button.label.transform.SetParent(button.transform);
-            // button.label.
+            button.label.StretchToParentContainer();
 
 
             return button;

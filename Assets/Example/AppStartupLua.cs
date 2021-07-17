@@ -12,7 +12,6 @@ public class AppStartupLua : MonoBehaviour
         QuillLua.Run();
 
         Quill.message.Register(PressSpace);
-
     }
 
     private void PressSpace(MessageData data)
@@ -22,14 +21,10 @@ public class AppStartupLua : MonoBehaviour
 
     private void Update()
     {
-        // QuillLua.Update();
+        QuillLua.Update();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var data = new MessageData()
-            {
-                id = "space",
-                container = new Dictionary<string, object>()
-            };
+            var data = new MessageData("space");
             data.container.Add("score", 3);
             data.container.Add("player", "cemuka");
             Quill.message.Post(data);

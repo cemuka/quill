@@ -28,5 +28,11 @@ namespace QuillLib
     {
         public string id;
         public Dictionary<string, object> container;
+
+        public MessageData(string id)
+        {
+            this.id = id;
+            container = new Dictionary<string, object>();
+        }
     }
 }

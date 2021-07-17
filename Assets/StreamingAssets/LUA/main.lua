@@ -1,4 +1,6 @@
 
+
+--[[ 
 -- local timePassed    = 0
 -- local timeLabel     = nil
 
@@ -110,4 +112,4 @@ end
 
 -- function OnExit()
 --     quill.log("program exit")
--- end
+-- end ]]
