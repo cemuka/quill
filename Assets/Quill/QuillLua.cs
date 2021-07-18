@@ -129,6 +129,16 @@ namespace QuillLib.Lua
             {
                 Debug.Log(log);
             }
+
+            public static Table mousePosition()
+            {
+                var position = new Table(QuillLua.MainScript());
+                var pos = Quill.MousePosition();
+                position["x"] = pos.x;
+                position["y"] = pos.y;
+
+                return position;
+            }
         }
     }
 }

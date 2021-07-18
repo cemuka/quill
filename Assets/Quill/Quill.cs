@@ -115,5 +115,21 @@ namespace QuillLib
             return button;
         }
 
+
+        public static Vector2       MousePosition()
+        {
+            Vector2 pos = Vector2.zero;
+            
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(mainRoot.rectTransform,
+                                                                    Input.mousePosition,
+                                                                    null,
+                                                                    out pos);
+
+            //  valid when canvas is overlay mode
+            pos.x = pos.x + Screen.width/2;
+            pos.y = pos.y - Screen.height/2;
+
+            return pos;
+        }
     }
 }
