@@ -4,9 +4,9 @@
 
 ## quill
 
-This project created to explore unity modding capabilities in mind. Idea is providing a scripting api to community to make user interfaces after game released(like wow, don't starve, etc.)
+This project is created to explore unity modding capabilities in mind. The idea is providing a scripting api to community to make user interfaces after the game release(like wow, don't starve, etc.).
  
-Quill is just a small wrapper based on pure UnityUI. You can create UI using its c# api, programmatically.
+Quill is just a small wrapper based on pure UnityUI. You can create UI by using its c# api, programmatically.
 
 
 ```csharp
