@@ -2,15 +2,26 @@ local tooltip = nil
 
 function OnInit()
     tooltip = quill.empty()
-    quill.mainRoot().addChild(tooltip)
+
+    options = {}
+    options.filterMode = "Point"
+    options.borderX = 3
+    options.borderY = 3
+    options.borderZ = 3
+    options.borderW = 3
 
     local box = quill.box()
+    box.setSize(120, 300)
     tooltip.addChild(box)
-    box.setColor(0,0.5,1)
+    box.sprite("body.png", options)
+    box.setImageType("Tiled")
+    box.setColor(1,1,1)
     box.setPosition(20, -20)
 
     local label = quill.label("tooltip example")
     box.addChild(label)
+    label.stretchToParent()
+    label.setTextAnchor("MiddleCenter")
 end
 
 function OnUpdate(dt)

@@ -67,6 +67,7 @@ namespace QuillLib
             element.root.rectTransform = elementGO.AddComponent<RectTransform>();
             
             element.root.rectTransform.sizeDelta = new Vector2(100, 30);
+            mainRoot.Add(element);
             element.ResetTransform();
             return element;
         }

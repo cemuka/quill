@@ -43,6 +43,7 @@ namespace QuillLib
             SetPivot(0, 1);
             SetAnchorsMin(0,1);
             SetAnchorsMax(0,1);
+            SetPosition(0,0);
         }
 
         public void StretchToParentContainer()

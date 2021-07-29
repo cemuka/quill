@@ -75,11 +75,14 @@ namespace QuillLib.Lua
         public void setAnchorsMin(float x, float y){ _target.root.rectTransform.anchorMin = new Vector2(x, y); }
         public void setAnchorsMax(float x, float y){ _target.root.rectTransform.anchorMax = new Vector2(x, y); }
 
-        public void setDefaultTransformValues()
+        public void resetTransform()
         {
-            setPivot(0, 1);
-            setAnchorsMin(0,1);
-            setAnchorsMax(0,1);
+            _target.ResetTransform();
+        }
+
+        public void stretchToParent()
+        {
+            _target.StretchToParentContainer();
         }
     }
 
@@ -153,11 +156,26 @@ namespace QuillLib.Lua
             setColor(r,g,b,a);
         }
 
+        public void setTextAnchor(string textAnchor)
+        {
+            _target.alignment   = (TextAnchor)Enum.Parse(typeof(TextAnchor), textAnchor, true);
+        }
+
     }
 
     [MoonSharpUserData]
     public class QuillBoxProxy : QuillElementProxy
     {
+        public const string FILTER_MODE         = "filterMode";
+        public const string PIVOT_X             = "pivotX";
+        public const string PIVOT_Y             = "pivotY";
+        public const string EXTRUDE             = "extrude";
+        public const string PIXELS_PER_UNIT     = "pixelsPerUnit";
+        public const string BORDER_X            = "borderX";
+        public const string BORDER_Y            = "borderY";
+        public const string BORDER_Z            = "borderZ";
+        public const string BORDER_W            = "borderW";
+
         private QuillBox _target;
 
         [MoonSharpHidden]
@@ -211,21 +229,43 @@ namespace QuillLib.Lua
             {
                 if (Quill.elements.ContainsKey(_target.id))
                 {
+                    var defaults        = DefaultSpriteOptions();
+
                     // Vector2 pivot
                     // float pixelsPerUnit
                     // uint extrude
                     // SpriteMeshType meshType
                     // Vector4 border
-                    var filterMode       = (FilterMode)Enum.Parse(typeof(FilterMode), options.Get("filterMode").String, true);
-                    var pivot           = new Vector2(  (float)options.Get("pivotX").Number, 
-                                                        (float)options.Get("pivotY").Number);
-                    var extrude         =               (uint)options.Get("extrude").Number;
-                    var pixelsPerUnit   =               (float)options.Get("pixelsPerUnit").Number;
-                    var border          = new Vector4(  (float)options.Get("borderX").Number,
-                                                        (float)options.Get("borderY").Number,
-                                                        (float)options.Get("borderZ").Number,
-                                                        (float)options.Get("borderW").Number);
 
+                    var pX              = options.Get(PIVOT_X);
+                    var pivotX          = pX.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pX.Number;
+
+                    var pY              = options.Get(PIVOT_Y);
+                    var pivotY          = pY.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pY.Number;
+                    var pivot           = new Vector2(pivotX, pivotY);
+
+                    var  fm             = options.Get(FILTER_MODE);
+                    string fmParsed     = fm.IsNil() ? (string)defaults.Get(FILTER_MODE).String : (string)fm.String;
+                    var filterMode       = (FilterMode)Enum.Parse(typeof(FilterMode), fmParsed, true);
+
+                    var ext             = options.Get(EXTRUDE);
+                    var extrude         = ext.IsNil() ? (uint)defaults.Get(EXTRUDE).Number : (uint)ext.Number;
+                    
+                    var ppu             = options.Get(PIXELS_PER_UNIT);
+                    var pixelsPerUnit   = ppu.IsNil() ? (float)defaults.Get(PIXELS_PER_UNIT).Number : (float)ppu.Number;
+
+                    var bX              = options.Get(BORDER_X);
+                    var borderX         = bX.IsNil() ? (float)defaults.Get(BORDER_X).Number : (float)bX.Number;
+                    
+                    var bY              = options.Get(BORDER_Y);
+                    var borderY         = bY.IsNil() ? (float)defaults.Get(BORDER_Y).Number : (float)bY.Number;
+                    
+                    var bZ              = options.Get(BORDER_Z);
+                    var borderZ         = bZ.IsNil() ? (float)defaults.Get(BORDER_Z).Number : (float)bZ.Number;
+                    
+                    var bW              = options.Get(BORDER_W);
+                    var borderW         = bW.IsNil() ? (float)defaults.Get(BORDER_W).Number : (float)bW.Number;
+                    var border          = new Vector4( borderX, borderY, borderZ, borderW );
 
                     CreateSprite(finalPath, filterMode, pivot, pixelsPerUnit, extrude, border);
                 }
@@ -247,15 +287,21 @@ namespace QuillLib.Lua
         {
             var options = new Table(QuillLua.MainScript());
 
-            options["filterMode"]        = "Bilinear";
-            options["pivotX"]           = 0.5f;
-            options["pivotY"]           = 0.5f;
-            options["extrude"]          = 0f;
-            options["pixelsPerUnit"]    = 100f;
-            options["borderX"]          = 0f;
-            options["borderY"]          = 0f;
-            options["borderZ"]          = 0f;
-            options["borderW"]          = 0f;
+            // Vector2 pivot
+            // float pixelsPerUnit
+            // uint extrude
+            // SpriteMeshType meshType
+            // Vector4 border
+
+            options[FILTER_MODE]        = "Bilinear";
+            options[PIVOT_X]            = 0.5f;
+            options[PIVOT_Y]            = 0.5f;
+            options[EXTRUDE]            = 0f;
+            options[PIXELS_PER_UNIT]    = 100f;
+            options[BORDER_X]           = 0f;
+            options[BORDER_Y]           = 0f;
+            options[BORDER_Z]           = 0f;
+            options[BORDER_W]           = 0f;
 
             return options;
         }
