@@ -9,6 +9,9 @@ This project is created to explore unity modding capabilities in mind. The idea 
 Quill is just a small wrapper based on pure UnityUI. You can create UI by using its c# api, programmatically.
 
 
+For more detail, here is the first devlog: [introduction to quill](https://dev.to/cemuka/introduction-to-quill-a-minimal-unity-ui-framework-with-lua-modding-support-devlog0-pm7)
+
+
 ```csharp
 var label = Quill.CreateLabel("hello world");
 label.SetSize(100, 30);
@@ -39,7 +42,7 @@ local timeLabel = nil
 
 function OnInit()
 
-    local root = quill.empty()
+    local root = quill:empty()
 
     color = {}
     color.r = 0.4
@@ -52,9 +55,9 @@ function OnInit()
     root:addChild(box)
 
     timeLabel = quill:label("time")
-    timeLabel.setSize(300, 100)
+    timeLabel:setSize(300, 100)
     
-    root.addChild(timeLabel)
+    root:addChild(timeLabel)
 end
 
 function OnUpdate(dt)
