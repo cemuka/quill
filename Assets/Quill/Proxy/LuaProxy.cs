@@ -26,35 +26,26 @@ namespace QuillLib.Lua
     {
         private IQuillElement _target;
 
+        [MoonSharpHidden]
         public QuillElementProxy(IQuillElement element)
         {
             _target = element;
         }
-
-        public int getId()
-        {
-            return _target.id;
-        }
+        
+        [MoonSharpHidden]
+        public IQuillElement Element => _target;
 
         public void show(){_target.root.rectTransform.gameObject.SetActive(true);}
         public void hide(){_target.root.rectTransform.gameObject.SetActive(false);}
 
         public void destroy()
         {
-            if (Quill.elements.ContainsKey(_target.id))
-            {
-                Quill.elements.Remove(_target.id);
-                MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
-            }
+            MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
         }
 
-        public void addChild(QuillElementProxy target)
+        public void addChild(QuillElementProxy childElement)
         {
-            if (Quill.elements.ContainsKey(target.getId()))
-            {
-                var element = Quill.elements[target.getId()];
-                _target.root.Add(element);
-            }
+            _target.root.Add(childElement.Element);
         }
 
         public void setPivot(float x, float y)
@@ -166,15 +157,15 @@ namespace QuillLib.Lua
     [MoonSharpUserData]
     public class QuillBoxProxy : QuillElementProxy
     {
-        public const string FILTER_MODE         = "filterMode";
-        public const string PIVOT_X             = "pivotX";
-        public const string PIVOT_Y             = "pivotY";
-        public const string EXTRUDE             = "extrude";
-        public const string PIXELS_PER_UNIT     = "pixelsPerUnit";
-        public const string BORDER_X            = "borderX";
-        public const string BORDER_Y            = "borderY";
-        public const string BORDER_Z            = "borderZ";
-        public const string BORDER_W            = "borderW";
+        private const string FILTER_MODE         = "filterMode";
+        private const string PIVOT_X             = "pivotX";
+        private const string PIVOT_Y             = "pivotY";
+        private const string EXTRUDE             = "extrude";
+        private const string PIXELS_PER_UNIT     = "pixelsPerUnit";
+        private const string BORDER_X            = "borderX";
+        private const string BORDER_Y            = "borderY";
+        private const string BORDER_Z            = "borderZ";
+        private const string BORDER_W            = "borderW";
 
         private QuillBox _target;
 
@@ -227,48 +218,45 @@ namespace QuillLib.Lua
             var finalPath = QuillLua.IMG_FOLDER_PATH + path;
             if (System.IO.File.Exists(finalPath))
             {
-                if (Quill.elements.ContainsKey(_target.id))
-                {
-                    var defaults        = DefaultSpriteOptions();
+                var defaults        = DefaultSpriteOptions();
 
-                    // Vector2 pivot
-                    // float pixelsPerUnit
-                    // uint extrude
-                    // SpriteMeshType meshType
-                    // Vector4 border
+                // Vector2 pivot
+                // float pixelsPerUnit
+                // uint extrude
+                // SpriteMeshType meshType
+                // Vector4 border
 
-                    var pX              = options.Get(PIVOT_X);
-                    var pivotX          = pX.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pX.Number;
+                var pX              = options.Get(PIVOT_X);
+                var pivotX          = pX.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pX.Number;
 
-                    var pY              = options.Get(PIVOT_Y);
-                    var pivotY          = pY.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pY.Number;
-                    var pivot           = new Vector2(pivotX, pivotY);
+                var pY              = options.Get(PIVOT_Y);
+                var pivotY          = pY.IsNil() ? (float)defaults.Get(PIVOT_X).Number : (float)pY.Number;
+                var pivot           = new Vector2(pivotX, pivotY);
 
-                    var  fm             = options.Get(FILTER_MODE);
-                    string fmParsed     = fm.IsNil() ? (string)defaults.Get(FILTER_MODE).String : (string)fm.String;
-                    var filterMode       = (FilterMode)Enum.Parse(typeof(FilterMode), fmParsed, true);
+                var  fm             = options.Get(FILTER_MODE);
+                string fmParsed     = fm.IsNil() ? (string)defaults.Get(FILTER_MODE).String : (string)fm.String;
+                var filterMode       = (FilterMode)Enum.Parse(typeof(FilterMode), fmParsed, true);
 
-                    var ext             = options.Get(EXTRUDE);
-                    var extrude         = ext.IsNil() ? (uint)defaults.Get(EXTRUDE).Number : (uint)ext.Number;
-                    
-                    var ppu             = options.Get(PIXELS_PER_UNIT);
-                    var pixelsPerUnit   = ppu.IsNil() ? (float)defaults.Get(PIXELS_PER_UNIT).Number : (float)ppu.Number;
+                var ext             = options.Get(EXTRUDE);
+                var extrude         = ext.IsNil() ? (uint)defaults.Get(EXTRUDE).Number : (uint)ext.Number;
+                
+                var ppu             = options.Get(PIXELS_PER_UNIT);
+                var pixelsPerUnit   = ppu.IsNil() ? (float)defaults.Get(PIXELS_PER_UNIT).Number : (float)ppu.Number;
 
-                    var bX              = options.Get(BORDER_X);
-                    var borderX         = bX.IsNil() ? (float)defaults.Get(BORDER_X).Number : (float)bX.Number;
-                    
-                    var bY              = options.Get(BORDER_Y);
-                    var borderY         = bY.IsNil() ? (float)defaults.Get(BORDER_Y).Number : (float)bY.Number;
-                    
-                    var bZ              = options.Get(BORDER_Z);
-                    var borderZ         = bZ.IsNil() ? (float)defaults.Get(BORDER_Z).Number : (float)bZ.Number;
-                    
-                    var bW              = options.Get(BORDER_W);
-                    var borderW         = bW.IsNil() ? (float)defaults.Get(BORDER_W).Number : (float)bW.Number;
-                    var border          = new Vector4( borderX, borderY, borderZ, borderW );
+                var bX              = options.Get(BORDER_X);
+                var borderX         = bX.IsNil() ? (float)defaults.Get(BORDER_X).Number : (float)bX.Number;
+                
+                var bY              = options.Get(BORDER_Y);
+                var borderY         = bY.IsNil() ? (float)defaults.Get(BORDER_Y).Number : (float)bY.Number;
+                
+                var bZ              = options.Get(BORDER_Z);
+                var borderZ         = bZ.IsNil() ? (float)defaults.Get(BORDER_Z).Number : (float)bZ.Number;
+                
+                var bW              = options.Get(BORDER_W);
+                var borderW         = bW.IsNil() ? (float)defaults.Get(BORDER_W).Number : (float)bW.Number;
+                var border          = new Vector4( borderX, borderY, borderZ, borderW );
 
-                    CreateSprite(finalPath, filterMode, pivot, pixelsPerUnit, extrude, border);
-                }
+                CreateSprite(finalPath, filterMode, pivot, pixelsPerUnit, extrude, border);
             }
         }
 
@@ -316,8 +304,7 @@ namespace QuillLib.Lua
 
             var sprite = Sprite.Create(tex, rect, pivot, pixelsPerUnit, extrude, SpriteMeshType.FullRect, border);
 
-            var target = Quill.elements[_target.id];
-            target.GetComponent<QuillBox>().sprite = sprite;
+            _target.GetComponent<QuillBox>().sprite = sprite;
         }
     }
 

@@ -4,7 +4,6 @@ namespace QuillLib
 {
     public interface IQuillElement
     {
-        int id { get; }
         ElementRoot root { get; }
         void SetPivot(float x, float y);
         void SetSize(float x, float y);
@@ -17,7 +16,6 @@ namespace QuillLib
 
     public class QuillElement : MonoBehaviour, IQuillElement
     {
-        public int id { get; set; }
         public ElementRoot root { get; set; }
 
         public void SetPivot(float x, float y)

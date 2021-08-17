@@ -13,19 +13,10 @@ namespace QuillLib
         public static QuillElement  mainCanvasElement   { get; private set; }
         public static Message       message             { get; private set; }
         public static Font          defaultFont;
-        public static Dictionary<int, QuillElement> elements;
-        
-        
-        private static int _maxId;
-        private static int SetId()
-        {
-            return _maxId++;
-        }
 
 
         public static void Init()
         {
-            elements = new Dictionary<int, QuillElement>();
             message = new Message();
 
             var canvasGO = new GameObject("QuillCanvas");
@@ -43,7 +34,6 @@ namespace QuillLib
             }
 
             mainCanvasElement = mainCanvas.gameObject.AddComponent<QuillElement>();
-            mainCanvasElement.id = -1;
             mainCanvasElement.root = new ElementRoot();
             mainCanvasElement.root.rectTransform = (RectTransform)mainCanvas.transform;
 
@@ -59,9 +49,6 @@ namespace QuillLib
             {
                 element         = elementGO.AddComponent<QuillElement>();
             }
-
-            element.id = SetId();
-            elements.Add(element.id, element);
 
             element.root = new ElementRoot();
             element.root.rectTransform = elementGO.AddComponent<RectTransform>();

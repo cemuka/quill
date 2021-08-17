@@ -9,7 +9,6 @@ namespace QuillLib
         public QuillBox box;        
 
         //  IQuillElement implementation
-        public int id => element.id;
         public ElementRoot root => element.root; 
         
         public void SetPivot(float x, float y)

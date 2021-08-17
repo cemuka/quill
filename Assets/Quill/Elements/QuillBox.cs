@@ -6,7 +6,6 @@ namespace QuillLib
     {
         public QuillElement element;
 
-        public int id => element.id;
         public ElementRoot root => element.root; 
         
         public void SetPivot(float x, float y)
