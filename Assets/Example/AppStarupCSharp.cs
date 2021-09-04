@@ -11,5 +11,8 @@ public class AppStarupCSharp : MonoBehaviour
     private void Start()
     {
         Quill.Init();
+
+        var button = Quill.CreateButton("hello button!");
+        button.interactable = false;
     }
 }
