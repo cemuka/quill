@@ -45,7 +45,7 @@ namespace QuillLib.Lua
 
         public void addChild(QuillElementProxy childElement)
         {
-            _target.root.Add(childElement.Element);
+            _target.root.AddChild(childElement.Element);
         }
 
         public void setPivot(float x, float y)
@@ -58,7 +58,7 @@ namespace QuillLib.Lua
             _target.root.rectTransform.sizeDelta = new Vector2(x, y);
         }
 
-        public void setPosition(float x, float y)
+        public void setAnchoredPosition(float x, float y)
         {
             _target.root.rectTransform.anchoredPosition = new Vector2(x, y);
         }

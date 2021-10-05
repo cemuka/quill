@@ -50,12 +50,12 @@ namespace QuillLib.Lua
             }
             _script.DoString(total);
             
-            _script.Call(_script.Globals["OnInit"]);
+            _script.Call(_script.Globals.Get("OnInit"));
+            _updateResult = _script.Globals.Get("OnUpdate");
         }
 
         public static void Update()
         {
-            _updateResult = _script.Globals.Get("OnUpdate");
             if (_updateResult.Function != null)
             {
                 _script.Call(_updateResult, Time.deltaTime);

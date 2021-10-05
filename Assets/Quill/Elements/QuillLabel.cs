@@ -23,9 +23,9 @@ namespace QuillLib
             element.SetSize(x, y);
         }
 
-        public void SetPosition(float x, float y)
+        public void SetAnchoredPosition(float x, float y)
         {
-            element.SetPosition(x, y);
+            element.SetAnchoredPosition(x, y);
         }
 
         public void SetAnchorsMin(float x, float y){ element.SetAnchorsMin(x, y); }

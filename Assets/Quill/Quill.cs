@@ -8,7 +8,6 @@ namespace QuillLib
 {
     public class Quill
     {
-        public static ElementRoot   mainRoot            { get => mainCanvasElement.root;}
         public static Canvas        mainCanvas          { get; private set; }
         public static QuillElement  mainCanvasElement   { get; private set; }
         public static Message       message             { get; private set; }
@@ -54,7 +53,7 @@ namespace QuillLib
             element.root.rectTransform = elementGO.AddComponent<RectTransform>();
             
             element.root.rectTransform.sizeDelta = new Vector2(100, 30);
-            mainRoot.Add(element);
+            mainCanvasElement.root.AddChild(element);
             element.ResetTransform();
             return element;
         }
@@ -95,7 +94,7 @@ namespace QuillLib
             button.targetGraphic= button.box;
 
             button.label        = CreateLabel(text);
-            button.root.Add(button.label);
+            button.root.AddChild(button.label);
             button.label.alignment  = TextAnchor.MiddleCenter;
             button.label.StretchToParentContainer();
 
@@ -108,7 +107,7 @@ namespace QuillLib
         {
             Vector2 pos = Vector2.zero;
             
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(mainRoot.rectTransform,
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(mainCanvasElement.root.rectTransform,
                                                                     Input.mousePosition,
                                                                     null,
                                                                     out pos);
