@@ -6,6 +6,10 @@
 
 Quill is just a small wrapper based on pure UnityUI. You can create UI by using its c# api, programmatically.
 
+Quill also comes with lua api support(experimental). That means you can run lua code from `StreamingAssets` and make ui in unity. 
+
+[Documentation](https://github.com/cemuka/Quill/wiki)
+
 ### Components
 
 #### Label
@@ -43,20 +47,44 @@ box.StretchToParentContainer();
 
 ![panel sample](./img/panel_sample.png)
 
+## quill lua api
+
+To enable lua feature, initialize and update the api like below.
+Quill will look into `StreamingAssets/LUA` directory for `main.lua` file.
+
 ```cs
 private void Start()
 {
     Quill.Init();
-    QuillLua.Run();
+    QuillLua.Run(); 
 }
 
 private void Update()
 {
     QuillLua.Update();
 }
+
+private void OnDestroy()
+{
+    QuillLua.Exit();
+}
+```
+Here is the structure of the `StreamingAssets/LUA/main.lua`
+```lua
+function OnInit()
+
+end
+
+function OnUpdate(dt)
+
+end
+
+function OnExit()
+
+end
 ```
 
-`StreamingAssets/LUA/main.lua`
+## Lua example
 
 ```lua
 
@@ -65,19 +93,19 @@ local timeLabel = nil
 
 function OnInit()
 
-    local root = quill:empty()
+    local root = quill.empty()
 
     color = {}
     color.r = 0.4
     color.g = 0.8
     color.b = 0.3
 
-    local box = quill:box()
+    local box = quill.box()
     box:setColor(color.r, color.g, color.b)
     box:setSize(300, 100)
     root:addChild(box)
 
-    timeLabel = quill:label("time")
+    timeLabel = quill.label("time")
     timeLabel:setSize(300, 100)
     
     root:addChild(timeLabel)
@@ -92,27 +120,10 @@ end
 
 ![sample](./img/sample.png)
 ## This project is heavily WIP.
-### Lua event hooks
-```lua
-function OnInit()
 
-end
 
-function OnUpdate(dt)
-
-end
-
-function OnMessage(data)
-
-end
-
-function OnExit()
-
-end
-```
-
-#### For more detail
+## For more detail
 Here is the first devlog: [introduction to quill](https://dev.to/cemuka/introduction-to-quill-a-minimal-unity-ui-framework-with-lua-modding-support-devlog0-pm7)
 
-#### references
+## references
 [Moonsharp](https://www.moonsharp.org)
