@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using MoonSharp.Interpreter.Loaders;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace QuillLib.Lua
 {
@@ -39,7 +40,8 @@ namespace QuillLib.Lua
             };
 
             UserData.RegisterAssembly();
-            _script.Globals["quill"] = new QuillLuaData();
+            _script.Globals["quill"]    = new QuillLuaData();
+            _script.Globals["wait"]     = (Func<float, DynValue>)Wait;
             
             var filePaths = Directory.GetFiles(path, "*.lua");
 
@@ -52,6 +54,7 @@ namespace QuillLib.Lua
             
             _script.Call(_script.Globals.Get("OnInit"));
             _updateResult = _script.Globals.Get("OnUpdate");
+
         }
 
         public static void Update()
@@ -76,6 +79,22 @@ namespace QuillLib.Lua
             {
                 _script.Call(result);
             }
+        }
+
+        public static DynValue Wait(float seconds)
+        {
+            Debug.Log("called: " + seconds);
+            return DynValue.NewYieldReq(new[] 
+            {
+                DynValue.NewNumber(seconds) 
+            });
+        }
+
+        private static IEnumerator WaitCO(float seconds)
+        {
+            Debug.Log("co started.");
+            yield return new WaitForSeconds(seconds);
+            Debug.Log("co ended.");
         }
 
         [MoonSharpUserData]
@@ -138,6 +157,15 @@ namespace QuillLib.Lua
                 position["y"] = pos.y;
 
                 return position;
+            }
+
+            public static DynValue waitForSeconds(float seconds)
+            {
+                Debug.Log($"LUA: Waiting for {seconds} seconds!");
+                return DynValue.NewYieldReq(new[] 
+                { 
+                    DynValue.NewNumber(seconds)
+                });
             }
         }
     }

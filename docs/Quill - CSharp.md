@@ -1,17 +1,7 @@
 # Quill
 ## Getting Started
 
-Setting up is dead easy.
-
-```csharp
-public class AppStartup : MonoBehaviour
-{
-    private void Start()
-    {
-        Quill.Init();
-    }
-}
-```
+.element
 
 Quill does not require any resource or prefab. It initialize its canvas and checks for `EventSystem`. Any default object will be a child of this canvas.
 
@@ -54,25 +44,10 @@ empty.SetAnchoredPosition(300, 300);
 `QuillElement` and `ElementRoot` are base components of the quill. It's more like `MonoBehaviour` and `Transform` if you familiar with unity. Since `RectTransform` is a sealead class `ElementRoot` come in handy.
 
 ```csharp
-public class QuillElement : MonoBehaviour, IQuillElement
+public class QuillElement : MonoBehaviour
 {
     public ElementRoot root { get; set; }
     ...
-}
-```
-
-```csharp
-public class ElementRoot
-{
-    public RectTransform rectTransform;
-
-    public void AddChild(IQuillElement element) 
-    { 
-        //  make the target as child of the rectTransform
-        
-        //  element is child
-        //  recTransform is parent
-    }
 }
 ```
 
@@ -84,7 +59,7 @@ label.fontSize = 20;
 ```
 
 ```csharp
-public class QuillLabel : Text, IQuillElement
+public class QuillLabel : Text
 {    
     ...
 }
@@ -94,8 +69,8 @@ public class QuillLabel : Text, IQuillElement
 Image object. [Unity Manual](https://docs.unity3d.com/2017.3/Documentation/ScriptReference/UI.Image.html)
 ```csharp
 var box = Quill.CreateBox(Color.green);
-box.SetSize(300, 300);
-box.SetAnchoredPosition(200, 200);
+box.element.SetSize(300, 300);
+box.element.SetAnchoredPosition(200, 200);
 ```
 
 ```csharp

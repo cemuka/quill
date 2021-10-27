@@ -35,36 +35,36 @@ namespace QuillLib.Lua
         [MoonSharpHidden]
         public IQuillElement Element => _target;
 
-        public void show(){_target.root.rectTransform.gameObject.SetActive(true);}
-        public void hide(){_target.root.rectTransform.gameObject.SetActive(false);}
+        public void show(){_target.RectTransform.gameObject.SetActive(true);}
+        public void hide(){_target.RectTransform.gameObject.SetActive(false);}
 
         public void destroy()
         {
-            MonoBehaviour.Destroy(_target.root.rectTransform.gameObject);
+            MonoBehaviour.Destroy(_target.RectTransform.gameObject);
         }
 
         public void addChild(QuillElementProxy childElement)
         {
-            _target.root.AddChild(childElement.Element);
+            _target.AddChild(childElement.Element);
         }
 
         public void setPivot(float x, float y)
         {
-            _target.root.rectTransform.pivot = new Vector2(x, y);
+            _target.RectTransform.pivot = new Vector2(x, y);
         }
 
         public void setSize(float x, float y)
         {
-            _target.root.rectTransform.sizeDelta = new Vector2(x, y);
+            _target.RectTransform.sizeDelta = new Vector2(x, y);
         }
 
         public void setAnchoredPosition(float x, float y)
         {
-            _target.root.rectTransform.anchoredPosition = new Vector2(x, y);
+            _target.RectTransform.anchoredPosition = new Vector2(x, y);
         }
 
-        public void setAnchorsMin(float x, float y){ _target.root.rectTransform.anchorMin = new Vector2(x, y); }
-        public void setAnchorsMax(float x, float y){ _target.root.rectTransform.anchorMax = new Vector2(x, y); }
+        public void setAnchorsMin(float x, float y){ _target.RectTransform.anchorMin = new Vector2(x, y); }
+        public void setAnchorsMax(float x, float y){ _target.RectTransform.anchorMax = new Vector2(x, y); }
 
         public void resetTransform()
         {
@@ -83,7 +83,7 @@ namespace QuillLib.Lua
         private QuillLabel _target;
 
         [MoonSharpHidden]
-        public QuillLabelProxy(QuillLabel label): base(label)
+        public QuillLabelProxy(QuillLabel label): base(label.element)
         {
             _target = label;
             _target.font = Quill.defaultFont;
@@ -170,7 +170,7 @@ namespace QuillLib.Lua
         private QuillBox _target;
 
         [MoonSharpHidden]
-        public QuillBoxProxy(QuillBox box) : base(box)
+        public QuillBoxProxy(QuillBox box) : base(box.element)
         {
             _target = box;
         }
@@ -318,7 +318,7 @@ namespace QuillLib.Lua
         private QuillButton _target;
 
         [MoonSharpHidden]
-        public QuillButtonProxy(QuillButton button) : base(button)
+        public QuillButtonProxy(QuillButton button) : base(button.element)
         {
             _target     = button;
             label       = new QuillLabelProxy(_target.label);

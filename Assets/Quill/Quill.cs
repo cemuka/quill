@@ -33,8 +33,7 @@ namespace QuillLib
             }
 
             mainCanvasElement = mainCanvas.gameObject.AddComponent<QuillElement>();
-            mainCanvasElement.root = new ElementRoot();
-            mainCanvasElement.root.rectTransform = (RectTransform)mainCanvas.transform;
+            mainCanvasElement.RectTransform = (RectTransform)mainCanvas.transform;
 
             defaultFont =  Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         }
@@ -49,11 +48,10 @@ namespace QuillLib
                 element         = elementGO.AddComponent<QuillElement>();
             }
 
-            element.root = new ElementRoot();
-            element.root.rectTransform = elementGO.AddComponent<RectTransform>();
+            element.RectTransform = elementGO.AddComponent<RectTransform>();
             
-            element.root.rectTransform.sizeDelta = new Vector2(100, 30);
-            mainCanvasElement.root.AddChild(element);
+            element.RectTransform.sizeDelta = new Vector2(100, 30);
+            mainCanvasElement.AddChild(element);
             element.ResetTransform();
             return element;
         }
@@ -94,9 +92,9 @@ namespace QuillLib
             button.targetGraphic= button.box;
 
             button.label        = CreateLabel(text);
-            button.root.AddChild(button.label);
+            button.element.AddChild(button.label.element);
             button.label.alignment  = TextAnchor.MiddleCenter;
-            button.label.StretchToParentContainer();
+            button.label.element.StretchToParentContainer();
 
 
             return button;
@@ -107,7 +105,7 @@ namespace QuillLib
         {
             Vector2 pos = Vector2.zero;
             
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(mainCanvasElement.root.rectTransform,
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(mainCanvasElement.RectTransform,
                                                                     Input.mousePosition,
                                                                     null,
                                                                     out pos);

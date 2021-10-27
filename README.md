@@ -15,8 +15,8 @@ Quill also comes with lua api support(experimental). That means you can run lua 
 #### Label
 ```cs
 var label = Quill.CreateLabel("hello world");
-label.SetSize(100, 30);
-label.SetPosition(100, 100);
+label.element.SetSize(100, 30);
+label.element.SetPosition(100, 100);
 ```
 
 #### Button
@@ -38,11 +38,11 @@ var label = Quill.CreateLabel("Score: ");
 label.alignment = TextAnchor.MiddleCenter;
 label.fontSize = 32;
 
-panelParent.root.Add(box);
-panelParent.root.Add(label);
+panelParent.Add(box);
+panelParent.Add(label);
 
-label.StretchToParentContainer();
-box.StretchToParentContainer();
+label.element.StretchToParentContainer();
+box.element.StretchToParentContainer();
 ```
 
 ![panel sample](./img/panel_sample.png)

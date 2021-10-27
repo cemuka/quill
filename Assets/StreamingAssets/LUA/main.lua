@@ -27,7 +27,7 @@ end
 function OnUpdate(dt)
     
     local pos = quill.mousePosition()
-    quill.log("pos: " .. pos.x .. ", " .. pos.y)
+    -- quill.log("pos: " .. pos.x .. ", " .. pos.y)
 
     tooltip:setAnchoredPosition(pos.x, pos.y)
 end

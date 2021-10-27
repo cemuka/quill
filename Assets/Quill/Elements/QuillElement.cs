@@ -4,7 +4,8 @@ namespace QuillLib
 {
     public interface IQuillElement
     {
-        ElementRoot root { get; }
+        RectTransform RectTransform { get; }
+        void AddChild(IQuillElement element);
         void SetPivot(float x, float y);
         void SetSize(float x, float y);
         void SetAnchoredPosition(float x, float y);
@@ -16,25 +17,31 @@ namespace QuillLib
 
     public class QuillElement : MonoBehaviour, IQuillElement
     {
-        public ElementRoot root { get; set; }
+        public RectTransform RectTransform { get; set; }
+        
+        public void AddChild(IQuillElement element)
+        {
+            element.RectTransform.SetParent(RectTransform);
+            element.RectTransform.anchoredPosition = Vector2.zero;
+        }
 
         public void SetPivot(float x, float y)
         {
-            root.rectTransform.pivot = new Vector2(x, y);
+            RectTransform.pivot = new Vector2(x, y);
         }
 
         public void SetSize(float x, float y)
         {
-            root.rectTransform.sizeDelta = new Vector2(x, y);
+            RectTransform.sizeDelta = new Vector2(x, y);
         }
 
         public void SetAnchoredPosition(float x, float y)
         {
-            root.rectTransform.anchoredPosition = new Vector2(x, y);
+            RectTransform.anchoredPosition = new Vector2(x, y);
         }
 
-        public void SetAnchorsMin(float x, float y){ root.rectTransform.anchorMin = new Vector2(x, y); }
-        public void SetAnchorsMax(float x, float y){ root.rectTransform.anchorMax = new Vector2(x, y); }
+        public void SetAnchorsMin(float x, float y){ RectTransform.anchorMin = new Vector2(x, y); }
+        public void SetAnchorsMax(float x, float y){ RectTransform.anchorMax = new Vector2(x, y); }
 
         public void ResetTransform()
         {
@@ -49,21 +56,10 @@ namespace QuillLib
             SetAnchorsMin(0, 0);
             SetAnchorsMax(1, 1);
             SetPivot(0.5f, 0.5f);
-            root.rectTransform.Left(0);
-            root.rectTransform.Right(0);
-            root.rectTransform.Top(0);
-            root.rectTransform.Bottom(0);
-        }
-    }
-    
-    public class ElementRoot
-    {
-        public RectTransform rectTransform;
-
-        public void AddChild(IQuillElement element)
-        {
-            element.root.rectTransform.SetParent(rectTransform);
-            element.root.rectTransform.anchoredPosition = Vector2.zero;
+            RectTransform.Left(0);
+            RectTransform.Right(0);
+            RectTransform.Top(0);
+            RectTransform.Bottom(0);
         }
     }
 }

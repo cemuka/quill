@@ -14,5 +14,7 @@ public class AppStarupCSharp : MonoBehaviour
         var button = Quill.CreateButton("my awesome button");
         button.box.color = Color.blue;
         button.label.color = Color.yellow;
+
+        button.element.SetAnchoredPosition(200, -100);
     }
 }
